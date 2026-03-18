@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import portrait from "../assets/cyril-gautier-portrait.jpeg";
 
 const experience = [
@@ -46,9 +46,9 @@ const cuisines = [
 ];
 
 const languages = [
-  { name: "Français", level: "Langue maternelle", accent: "Premier langage du goût et de la précision." },
-  { name: "Anglais", level: "Courant", accent: "À l'aise en environnement international." },
-  { name: "Espagnol", level: "A2", accent: "Pratique née d'une première immersion en Espagne." },
+  { name: "Français", level: "Langue maternelle", accent: "Une langue maternelle ancrée dans le quotidien, la culture et la transmission." },
+  { name: "Anglais", level: "Langue maternelle", accent: "Ma première langue parlée, avec une expression naturelle et spontanée." },
+  { name: "Espagnol", level: "A2", accent: "Appris de façon scolaire en France, puis approfondi lors de mon immersion en Espagne." },
   { name: "Filipino", level: "Quelques notions", accent: "Repères culturels et expressions du quotidien." }
 ];
 
@@ -71,10 +71,10 @@ const trainings = [
   }
 ];
 
-const SectionHeading = ({ eyebrow, title }) => (
+const SectionHeading = ({ eyebrow, title, titleClassName = "" }) => (
   <div className="mb-10 grid gap-4 lg:grid-cols-[160px_minmax(0,1fr)] lg:items-start">
     <p className="text-xs uppercase tracking-[0.28em] text-gold-500">{eyebrow}</p>
-    <h2 className="max-w-4xl font-display text-4xl leading-none text-espresso-900 sm:text-5xl lg:text-6xl">
+    <h2 className={`max-w-4xl font-display text-4xl leading-none text-espresso-900 sm:text-5xl lg:text-6xl ${titleClassName}`}>
       {title}
     </h2>
   </div>
@@ -125,6 +125,14 @@ const SparkIcon = ({ className = iconClassName }) => (
   </svg>
 );
 
+const InstagramIcon = ({ className = iconClassName }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden="true">
+    <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+    <circle cx="12" cy="12" r="4" />
+    <circle cx="17.3" cy="6.7" r="0.8" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 const MenuIcon = ({ open }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true">
     {open ? (
@@ -144,15 +152,15 @@ const MenuIcon = ({ open }) => (
 
 const ContactRow = ({ icon, href, children }) => {
   const content = (
-    <span className="inline-flex items-center gap-3 rounded-full border border-black/10 bg-white/45 px-4 py-3 transition hover:-translate-y-0.5 hover:bg-white/70">
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-500/12 text-gold-600">{icon}</span>
-      <span>{children}</span>
+    <span className="contact-row inline-flex w-full items-center gap-3 rounded-[1.15rem] border border-black/10 bg-white/50 px-4 py-4">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gold-500/12 text-gold-600">{icon}</span>
+      <span className="min-w-0 text-sm leading-6 text-espresso-800 sm:text-base">{children}</span>
     </span>
   );
 
   if (href) {
     return (
-      <a href={href} className="justify-self-start">
+      <a href={href} className="block w-full">
         {content}
       </a>
     );
@@ -169,8 +177,25 @@ const levelToneClass = {
 export default function App() {
   const year = new Date().getFullYear();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
 
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 640px)");
+
+    const updateBreakpoint = () => {
+      if (!mediaQuery.matches) {
+        setNavVisible(true);
+      }
+    };
+
+    mediaQuery.addEventListener("change", updateBreakpoint);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateBreakpoint);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-hero-glow text-espresso-900">
@@ -180,9 +205,23 @@ export default function App() {
         <div className="floating-orb floating-orb-b" />
         <div className="floating-orb floating-orb-c" />
       </div>
+      <div
+        className="fixed inset-x-0 top-0 z-30 hidden h-12 sm:block"
+        onMouseEnter={() => setNavVisible(true)}
+      />
 
-      <div className="mx-auto w-[min(1180px,calc(100%-2rem))] py-4 sm:w-[min(1180px,calc(100%-2.5rem))] sm:py-6">
-        <header className="liquid-nav sticky top-3 z-20 mb-3 rounded-[1.45rem] px-3 py-3 sm:top-5 sm:mb-4 sm:rounded-full sm:px-4 sm:py-3">
+      <div className="mx-auto w-[min(1180px,calc(100%-2rem))] py-2 sm:w-[min(1180px,calc(100%-2.5rem))] sm:py-3">
+        <header
+          className={`liquid-nav z-20 mb-3 rounded-[1.45rem] px-3 py-3 transition duration-500 sm:fixed sm:left-1/2 sm:top-5 sm:mb-0 sm:w-[min(1180px,calc(100%-2.5rem))] sm:-translate-x-1/2 sm:rounded-full sm:px-4 sm:py-3 ${
+            navVisible || menuOpen ? "sm:translate-y-0 sm:opacity-100" : "sm:-translate-y-[140%] sm:opacity-0"
+          }`}
+          onMouseEnter={() => setNavVisible(true)}
+          onMouseLeave={() => {
+            if (!menuOpen) {
+              setNavVisible(false);
+            }
+          }}
+        >
           <div className="flex items-center justify-between gap-3">
             <a href="#top" className="px-2 text-[0.78rem] tracking-[0.22em] text-espresso-900 sm:px-2 sm:text-[0.82rem] sm:tracking-[0.24em]">
               CYRIL GAUTIER
@@ -234,7 +273,7 @@ export default function App() {
         </header>
 
         <main id="top">
-          <section className="hero-stage grid min-h-[calc(100vh-11rem)] gap-7 py-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.8fr)] lg:py-11">
+          <section className="hero-stage grid min-h-[calc(100vh-11rem)] gap-7 py-3 sm:pt-12 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.8fr)] lg:py-8 lg:pt-14">
             <GlassPanel className="reveal-up reveal-delay-1 flex flex-col justify-center rounded-[2.5rem] p-8 sm:p-12 lg:p-16">
               <p className="mb-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-gold-500">
                 <SparkIcon />
@@ -322,13 +361,14 @@ export default function App() {
             <SectionHeading eyebrow="Profil" title="Une trajectoire atypique tournée vers l'exigence culinaire." />
             <div className="grid gap-6 text-base leading-8 text-espresso-700 lg:grid-cols-2">
               <p>
-                Anciennement installé en région parisienne, j'ai découvert ma passion pour la cuisine en Espagne. Après sept mois sur place puis une
-                formation d'approfondissement à Vienne, je suis revenu à Paris avec une conviction forte : la cuisine est un terrain sans limite, où
-                dialoguent sensibilité, technique et cultures du monde.
+                J'ai vécu à Paris jusqu'en août 2025, avant de passer plus de six mois à Malaga, en Espagne. Ce séjour m'a permis de voyager à
+                travers le sud du pays pour découvrir plus profondément la cuisine espagnole, tout en gardant l'habitude d'explorer la gastronomie
+                locale partout où je vais.
               </p>
               <p>
-                Mon approche réunit créativité, autonomie, sérieux et engagement opérationnel. Je cherche aujourd'hui des maisons capables d'accueillir
-                cette énergie et de la pousser vers une cuisine plus précise, plus personnelle et plus ambitieuse.
+                J'ai commencé à cuisiner très jeune. Mon approche réunit créativité, autonomie, sérieux et engagement opérationnel. Je cherche
+                aujourd'hui des maisons capables d'accueillir cette énergie et de la pousser vers une cuisine plus précise, plus personnelle et plus
+                ambitieuse.
               </p>
             </div>
           </GlassPanel>
@@ -421,13 +461,24 @@ export default function App() {
           </section>
 
           <GlassPanel className="reveal-up mt-7 rounded-[2rem] p-6 sm:p-10" id="contact">
-            <SectionHeading eyebrow="Contact" title="Disponible pour rejoindre une maison exigeante." />
-            <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-              <div>
-                <p className="max-w-2xl text-base leading-8 text-espresso-700">
-                  Pour une opportunité en cuisine, en pâtisserie ou en restauration haut de gamme, vous pouvez me contacter directement.
-                </p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <SectionHeading
+              eyebrow="Contact"
+              title="Disponible pour rejoindre une maison exigeante."
+              titleClassName="max-w-[18ch] lg:text-5xl"
+            />
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:gap-8 lg:items-stretch">
+              <div className="flex h-full flex-col justify-between rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0.36))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:p-8">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-gold-500">Échanger</p>
+                  <h3 className="mt-3 max-w-[12ch] font-display text-3xl leading-tight text-espresso-900 sm:text-4xl">
+                    Écrivons la suite autour d'une cuisine exigeante.
+                  </h3>
+                  <p className="mt-5 max-w-2xl text-base leading-8 text-espresso-700">
+                    Pour une opportunité en cuisine, en pâtisserie ou en restauration haut de gamme, vous pouvez me contacter directement.
+                  </p>
+                </div>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <a
                     href="mailto:cyrilgautiercooks@gmail.com"
                     className="button-luxury inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-black/10 bg-espresso-900 px-6 text-sm text-sand-50"
@@ -442,17 +493,31 @@ export default function App() {
                     <PhoneIcon />
                     Me joindre
                   </a>
+                  <a
+                    href="https://www.instagram.com/gautiercooks/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button-secondary-luxury inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-black/10 bg-white/60 px-6 text-sm text-espresso-900"
+                  >
+                    <InstagramIcon />
+                    Instagram
+                  </a>
                 </div>
               </div>
-              <div className="grid gap-3 text-base text-espresso-700">
+
+              <div className="grid gap-3 rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.34))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:p-5">
+                <p className="px-2 pb-1 text-xs uppercase tracking-[0.28em] text-gold-500">Coordonnées</p>
+                <ContactRow icon={<PinIcon />} href={null}>
+                  5 Rue Diderot, 92000 Nanterre
+                </ContactRow>
                 <ContactRow icon={<MailIcon />} href="mailto:cyrilgautiercooks@gmail.com">
                   cyrilgautiercooks@gmail.com
                 </ContactRow>
                 <ContactRow icon={<PhoneIcon />} href="tel:+34614186133">
                   +34 614 18 61 33
                 </ContactRow>
-                <ContactRow icon={<PinIcon />} href={null}>
-                  5 Rue Diderot, 92000 Nanterre
+                <ContactRow icon={<InstagramIcon />} href="https://www.instagram.com/gautiercooks/">
+                  @gautiercooks
                 </ContactRow>
               </div>
             </div>
