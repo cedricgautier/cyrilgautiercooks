@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import LiquidGlass from "liquid-glass-react";
 import portrait from "../assets/cyril-gautier-portrait.jpeg";
 
 const experience = [
