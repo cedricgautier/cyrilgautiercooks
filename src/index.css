@@ -418,6 +418,45 @@
   }
 }
 
+@media (max-width: 639px) {
+  .liquid-nav {
+    border-radius: 1.25rem;
+    backdrop-filter: blur(18px) saturate(130%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+  }
+
+  .hero-stage::before {
+    left: -10%;
+    top: 2%;
+    height: 180px;
+    width: 180px;
+  }
+
+  .hero-stage::after {
+    right: -8%;
+    top: 12%;
+    height: 220px;
+    width: 220px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .lux-card:hover,
+  .lux-subcard:hover,
+  .button-luxury:hover,
+  .button-secondary-luxury:hover,
+  .contact-row:hover,
+  .mobile-nav-link:hover,
+  .desktop-nav-link:hover,
+  .menu-trigger:hover,
+  .image-depth:hover img {
+    transform: none;
+    box-shadow: inherit;
+    background: inherit;
+    filter: inherit;
+  }
+}
+
 @keyframes drift {
   0%,
   100% {
