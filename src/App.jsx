@@ -74,7 +74,7 @@ const trainings = [
 const SectionHeading = ({ eyebrow, title, titleClassName = "" }) => (
   <div className="mb-10 grid gap-4 lg:grid-cols-[160px_minmax(0,1fr)] lg:items-start">
     <p className="text-xs uppercase tracking-[0.28em] text-gold-500">{eyebrow}</p>
-    <h2 className={`max-w-4xl font-display text-4xl leading-none text-espresso-900 sm:text-5xl lg:text-6xl ${titleClassName}`}>
+    <h2 className={`max-w-4xl font-display text-3xl leading-none text-espresso-900 sm:text-5xl lg:text-6xl ${titleClassName}`}>
       {title}
     </h2>
   </div>
@@ -210,7 +210,7 @@ export default function App() {
         onMouseEnter={() => setNavVisible(true)}
       />
 
-      <div className="mx-auto w-[min(1180px,calc(100%-2rem))] py-2 sm:w-[min(1180px,calc(100%-2.5rem))] sm:py-3">
+      <div className="mx-auto w-[min(1180px,calc(100%-1rem))] py-2 sm:w-[min(1180px,calc(100%-2.5rem))] sm:py-3">
         <header
           className={`liquid-nav z-20 mb-3 rounded-[1.45rem] px-3 py-3 transition duration-500 sm:fixed sm:left-1/2 sm:top-5 sm:mb-0 sm:w-[min(1180px,calc(100%-2.5rem))] sm:-translate-x-1/2 sm:rounded-full sm:px-4 sm:py-3 ${
             navVisible || menuOpen ? "sm:translate-y-0 sm:opacity-100" : "sm:-translate-y-[140%] sm:opacity-0"
@@ -273,16 +273,16 @@ export default function App() {
         </header>
 
         <main id="top">
-          <section className="hero-stage grid min-h-[calc(100vh-11rem)] gap-7 py-3 sm:pt-12 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.8fr)] lg:py-8 lg:pt-14">
-            <GlassPanel className="reveal-up reveal-delay-1 flex flex-col justify-center rounded-[2.5rem] p-8 sm:p-12 lg:p-16">
+          <section className="hero-stage grid gap-5 py-3 sm:pt-12 lg:min-h-[calc(100vh-11rem)] lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,0.8fr)] lg:py-8 lg:pt-14">
+            <GlassPanel className="reveal-up reveal-delay-1 flex flex-col justify-center rounded-[2rem] p-6 sm:rounded-[2.5rem] sm:p-12 lg:p-16">
               <p className="mb-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-gold-500">
                 <SparkIcon />
                 Cuisine d'auteur · France
               </p>
-              <h1 className="max-w-[10ch] font-display text-[clamp(2.9rem,10vw,6.6rem)] leading-[0.93] tracking-[-0.04em] text-espresso-900">
+              <h1 className="max-w-[11ch] font-display text-[clamp(2.55rem,13vw,6.6rem)] leading-[0.93] tracking-[-0.04em] text-espresso-900 sm:max-w-[10ch]">
                 Une cuisine guidée par la précision, la curiosité et le goût du détail.
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-8 text-espresso-700 sm:text-lg">
+              <p className="mt-5 max-w-2xl text-[0.97rem] leading-7 text-espresso-700 sm:mt-6 sm:text-lg sm:leading-8">
                 Je suis un cuisinier français formé à Paris, révélé par une première immersion en Espagne et animé par une recherche constante de
                 saveurs, de textures et de cultures.
               </p>
@@ -311,9 +311,9 @@ export default function App() {
               </div>
             </GlassPanel>
 
-            <div className="grid gap-5 self-end">
+            <div className="grid gap-4 self-end sm:gap-5">
               <GlassPanel className="reveal-up reveal-delay-2 image-depth overflow-hidden rounded-[2rem]">
-                <figure className="min-h-[26rem]">
+                <figure className="min-h-[19rem] sm:min-h-[26rem]">
                   <img
                     src={portrait}
                     alt="Cyril Gautier en cuisine pendant le dressage de plusieurs assiettes."
@@ -322,7 +322,7 @@ export default function App() {
                 </figure>
               </GlassPanel>
 
-              <GlassPanel className="reveal-up reveal-delay-3 rounded-[2rem] bg-[linear-gradient(180deg,rgba(255,252,247,0.86),rgba(242,231,213,0.78))] p-7">
+              <GlassPanel className="reveal-up reveal-delay-3 rounded-[2rem] bg-[linear-gradient(180deg,rgba(255,252,247,0.86),rgba(242,231,213,0.78))] p-5 sm:p-7">
                 <p className="mb-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-gold-500">
                   <SparkIcon />
                   Basé en France
@@ -357,7 +357,7 @@ export default function App() {
             </div>
           </section>
 
-          <GlassPanel className="reveal-up mt-7 rounded-[2rem] p-6 sm:p-10" id="profil">
+          <GlassPanel className="reveal-up mt-6 rounded-[2rem] p-5 sm:mt-7 sm:p-10" id="profil">
             <SectionHeading eyebrow="Profil" title="Une trajectoire atypique tournée vers l'exigence culinaire." />
             <div className="grid gap-6 text-base leading-8 text-espresso-700 lg:grid-cols-2">
               <p>
@@ -373,7 +373,7 @@ export default function App() {
             </div>
           </GlassPanel>
 
-          <GlassPanel className="reveal-up mt-7 rounded-[2rem] p-6 sm:p-10" id="parcours">
+          <GlassPanel className="reveal-up mt-6 rounded-[2rem] p-5 sm:mt-7 sm:p-10" id="parcours">
             <SectionHeading eyebrow="Parcours" title="Expérience, formations et montée en gamme." />
             <div className="grid gap-4">
               {experience.map((item) => (
@@ -386,7 +386,7 @@ export default function App() {
             </div>
           </GlassPanel>
 
-          <GlassPanel className="reveal-up mt-7 rounded-[2rem] p-6 sm:p-10" id="savoir-faire">
+          <GlassPanel className="reveal-up mt-6 rounded-[2rem] p-5 sm:mt-7 sm:p-10" id="savoir-faire">
             <SectionHeading eyebrow="Savoir-faire" title="Une base française enrichie par des influences internationales." />
             <div className="grid gap-5 lg:grid-cols-2">
               <article className="lux-subcard rounded-[1.75rem] border border-black/10 bg-white/50 p-6 backdrop-blur-md">
@@ -398,7 +398,7 @@ export default function App() {
                   {cuisines.map((item) => (
                     <div
                       key={item.name}
-                      className="group flex items-center justify-between gap-4 rounded-[1.15rem] border border-white/50 bg-white/55 px-4 py-3 transition duration-300 hover:border-gold-500/20 hover:bg-white/72"
+                      className="group flex flex-col items-start gap-3 rounded-[1.15rem] border border-white/50 bg-white/55 px-4 py-3 transition duration-300 hover:border-gold-500/20 hover:bg-white/72 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
                     >
                       <div className="flex items-center gap-3">
                         <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 shadow-[0_0_0_5px_rgba(180,148,93,0.08)]" />
@@ -423,7 +423,7 @@ export default function App() {
                       key={item.name}
                       className="rounded-[1.15rem] border border-white/50 bg-[linear-gradient(180deg,rgba(255,255,255,0.72),rgba(255,255,255,0.46))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]"
                     >
-                      <div className="flex items-start justify-between gap-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div>
                           <p className="text-base font-medium text-espresso-900">{item.name}</p>
                           <p className="mt-1 text-sm leading-6 text-espresso-700">{item.accent}</p>
@@ -451,22 +451,22 @@ export default function App() {
             </div>
           </GlassPanel>
 
-          <section className="reveal-up mt-7">
-            <div className="quote-panel rounded-[2rem] border border-black/10 bg-[linear-gradient(135deg,rgba(22,19,16,0.92),rgba(69,53,31,0.88))] px-6 py-10 text-center text-sand-50 shadow-luxury sm:px-10 sm:py-14">
-              <p className="font-display text-4xl leading-none sm:text-6xl lg:text-7xl">
+          <section className="reveal-up mt-6 sm:mt-7">
+            <div className="quote-panel rounded-[2rem] border border-black/10 bg-[linear-gradient(135deg,rgba(22,19,16,0.92),rgba(69,53,31,0.88))] px-5 py-8 text-center text-sand-50 shadow-luxury sm:px-10 sm:py-14">
+              <p className="font-display text-3xl leading-none sm:text-6xl lg:text-7xl">
                 "Un monde sans limites de saveurs, de textures et de cultures."
               </p>
               <p className="mt-5 text-xs uppercase tracking-[0.28em] text-sand-200/70">Ma devise</p>
             </div>
           </section>
 
-          <GlassPanel className="reveal-up mt-7 rounded-[2rem] p-6 sm:p-10" id="contact">
+          <GlassPanel className="reveal-up mt-6 rounded-[2rem] p-5 sm:mt-7 sm:p-10" id="contact">
             <SectionHeading
               eyebrow="Contact"
               title="Disponible pour rejoindre une maison exigeante."
               titleClassName="max-w-[18ch] lg:text-5xl"
             />
-            <div className="grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:gap-8 lg:items-stretch">
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:gap-8 lg:items-stretch">
               <div className="flex h-full flex-col justify-between rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0.36))] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:p-8">
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-gold-500">Échanger</p>
@@ -505,7 +505,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="grid gap-3 rounded-[1.75rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.34))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:p-5">
+              <div className="grid gap-3 rounded-[1.5rem] border border-white/45 bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,255,255,0.34))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] sm:rounded-[1.75rem] sm:p-5">
                 <p className="px-2 pb-1 text-xs uppercase tracking-[0.28em] text-gold-500">Coordonnées</p>
                 <ContactRow icon={<PinIcon />} href={null}>
                   5 Rue Diderot, 92000 Nanterre
