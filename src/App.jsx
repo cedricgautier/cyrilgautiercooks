@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import LiquidGlass from "liquid-glass-react";
 import portrait from "../assets/cyril-gautier-portrait.jpeg";
 
 const experience = [
@@ -36,7 +37,7 @@ const experience = [
 
 const cuisines = [
   { name: "Française", level: "Intermédiaire", tone: "refined" },
-  { name: "Filipino", level: "Intermédiaire", tone: "refined" },
+  { name: "Philippin", level: "Intermédiaire", tone: "refined" },
   { name: "Américaine", level: "Intermédiaire", tone: "refined" },
   { name: "Italienne", level: "Débutant", tone: "emerging" },
   { name: "Chinoise", level: "Débutant", tone: "emerging" },
@@ -80,8 +81,11 @@ const SectionHeading = ({ eyebrow, title, titleClassName = "" }) => (
   </div>
 );
 
-const GlassPanel = ({ children, className = "" }) => (
-  <div className={`lux-card rounded-[2rem] border border-black/10 bg-white/55 shadow-luxury backdrop-blur-xl ${className}`}>
+const GlassPanel = ({ children, className = "", ...props }) => (
+  <div
+    {...props}
+    className={`lux-card rounded-[2rem] border border-black/10 bg-white/55 shadow-luxury backdrop-blur-xl ${className}`}
+  >
     {children}
   </div>
 );
@@ -133,20 +137,18 @@ const InstagramIcon = ({ className = iconClassName }) => (
   </svg>
 );
 
-const MenuIcon = ({ open }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden="true">
-    {open ? (
-      <>
-        <path d="M6 6l12 12" strokeLinecap="round" />
-        <path d="M18 6 6 18" strokeLinecap="round" />
-      </>
-    ) : (
-      <>
-        <path d="M4 7h16" strokeLinecap="round" />
-        <path d="M4 12h16" strokeLinecap="round" />
-        <path d="M4 17h16" strokeLinecap="round" />
-      </>
-    )}
+const UserIcon = ({ className = iconClassName }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden="true">
+    <circle cx="12" cy="8" r="3.2" />
+    <path d="M5.5 19c1.8-3 4.1-4.5 6.5-4.5s4.7 1.5 6.5 4.5" strokeLinecap="round" />
+  </svg>
+);
+
+const BriefcaseIcon = ({ className = iconClassName }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={className} aria-hidden="true">
+    <rect x="4" y="7" width="16" height="11" rx="2.5" />
+    <path d="M9 7V5.8C9 4.8 9.8 4 10.8 4h2.4C14.2 4 15 4.8 15 5.8V7" />
+    <path d="M4 11.5h16" />
   </svg>
 );
 
@@ -174,12 +176,32 @@ const levelToneClass = {
   emerging: "bg-amber-50/80 text-amber-700 ring-1 ring-amber-200/70"
 };
 
+const navItems = [
+  { id: "profil", label: "Profil", icon: UserIcon },
+  { id: "parcours", label: "Parcours", icon: BriefcaseIcon },
+  { id: "savoir-faire", label: "Savoir-faire", icon: SparkIcon },
+  { id: "contact", label: "Contact", icon: MailIcon }
+];
+
 export default function App() {
   const year = new Date().getFullYear();
-  const [menuOpen, setMenuOpen] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const pageRef = useRef(null);
 
-  const closeMenu = () => setMenuOpen(false);
+  const scrollToSection = (id) => {
+    const target = document.getElementById(id);
+
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      setMobileNavOpen(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setMobileNavOpen(false);
+  };
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 640px)");
@@ -198,7 +220,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-hero-glow text-espresso-900">
+    <div ref={pageRef} className="min-h-screen overflow-x-hidden bg-hero-glow text-espresso-900">
       <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:120px_120px] [mask-image:linear-gradient(180deg,rgba(0,0,0,0.55),transparent_80%)]" />
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="floating-orb floating-orb-a" />
@@ -206,70 +228,36 @@ export default function App() {
         <div className="floating-orb floating-orb-c" />
       </div>
       <div
-        className="fixed inset-x-0 top-0 z-30 hidden h-12 sm:block"
+        className="fixed inset-x-0 top-0 z-20 hidden h-12 sm:block"
         onMouseEnter={() => setNavVisible(true)}
       />
 
-      <div className="mx-auto w-[min(1180px,calc(100%-1rem))] py-2 sm:w-[min(1180px,calc(100%-2.5rem))] sm:py-3">
+      <div className="mx-auto w-[min(1180px,calc(100%-1rem))] py-2 pb-24 sm:w-[min(1180px,calc(100%-2.5rem))] sm:py-3 sm:pb-3">
         <header
-          className={`liquid-nav z-20 mb-3 rounded-[1.45rem] px-3 py-3 transition duration-500 sm:fixed sm:left-1/2 sm:top-5 sm:mb-0 sm:w-[min(1180px,calc(100%-2.5rem))] sm:-translate-x-1/2 sm:rounded-full sm:px-4 sm:py-3 ${
-            navVisible || menuOpen ? "sm:translate-y-0 sm:opacity-100" : "sm:-translate-y-[140%] sm:opacity-0"
+          className={`liquid-nav z-30 mb-3 hidden rounded-[1.45rem] px-3 py-3 transition duration-500 sm:fixed sm:left-1/2 sm:top-5 sm:z-40 sm:mb-0 sm:block sm:w-[min(1180px,calc(100%-2.5rem))] sm:-translate-x-1/2 sm:rounded-full sm:px-4 sm:py-3 ${
+            navVisible ? "sm:translate-y-0 sm:opacity-100" : "sm:-translate-y-[140%] sm:opacity-0"
           }`}
           onMouseEnter={() => setNavVisible(true)}
           onMouseLeave={() => {
-            if (!menuOpen) {
-              setNavVisible(false);
-            }
+            setNavVisible(false);
           }}
         >
           <div className="flex items-center justify-between gap-3">
-            <a href="#top" className="px-2 text-[0.78rem] tracking-[0.22em] text-espresso-900 sm:px-2 sm:text-[0.82rem] sm:tracking-[0.24em]">
-              CYRIL GAUTIER
-            </a>
             <button
               type="button"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-nav"
-              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-              onClick={() => setMenuOpen((value) => !value)}
-              className="menu-trigger inline-flex h-11 w-11 items-center justify-center rounded-full text-espresso-900 sm:hidden"
+              onClick={scrollToTop}
+              className="px-2 text-[0.78rem] tracking-[0.22em] text-espresso-900 sm:px-2 sm:text-[0.82rem] sm:tracking-[0.24em]"
             >
-              <MenuIcon open={menuOpen} />
+              CYRIL GAUTIER
             </button>
             <nav className="hidden sm:flex sm:flex-wrap sm:gap-x-5 sm:gap-y-2 sm:text-sm sm:text-espresso-700" aria-label="Navigation principale">
-              <a href="#profil" className="desktop-nav-link">
-                Profil
-              </a>
-              <a href="#parcours" className="desktop-nav-link">
-                Parcours
-              </a>
-              <a href="#savoir-faire" className="desktop-nav-link">
-                Savoir-faire
-              </a>
-              <a href="#contact" className="desktop-nav-link">
-                Contact
-              </a>
+              {navItems.map((item) => (
+                <button key={item.id} type="button" onClick={() => scrollToSection(item.id)} className="desktop-nav-link">
+                  {item.label}
+                </button>
+              ))}
             </nav>
           </div>
-
-          <nav
-            id="mobile-nav"
-            className={`mobile-menu sm:hidden ${menuOpen ? "mobile-menu-open" : "mobile-menu-closed"}`}
-            aria-label="Navigation principale mobile"
-          >
-            <a href="#profil" className="mobile-nav-link" onClick={closeMenu}>
-              Profil
-            </a>
-            <a href="#parcours" className="mobile-nav-link" onClick={closeMenu}>
-              Parcours
-            </a>
-            <a href="#savoir-faire" className="mobile-nav-link" onClick={closeMenu}>
-              Savoir-faire
-            </a>
-            <a href="#contact" className="mobile-nav-link" onClick={closeMenu}>
-              Contact
-            </a>
-          </nav>
         </header>
 
         <main id="top">
@@ -303,6 +291,10 @@ export default function App() {
                 </a>
                 <a
                   href="#parcours"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    scrollToSection("parcours");
+                  }}
                   className="button-secondary-luxury inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-black/10 bg-white/55 px-6 text-sm text-espresso-900"
                 >
                   <ArrowIcon />
@@ -527,6 +519,36 @@ export default function App() {
         <footer className="mt-7 flex flex-col gap-2 px-2 pt-4 text-sm text-espresso-700 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Cyril Gautier</p>
         </footer>
+      </div>
+
+      <div className={`mobile-liquid-nav sm:hidden ${mobileNavOpen ? "mobile-liquid-nav-open" : "mobile-liquid-nav-closed"}`}>
+        <div className="mobile-liquid-shell">
+          <nav
+            aria-label="Navigation mobile"
+            className={`mobile-liquid-panel ${mobileNavOpen ? "mobile-liquid-panel-open" : "mobile-liquid-panel-closed"}`}
+          >
+            {navItems.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <button key={item.id} type="button" onClick={() => scrollToSection(item.id)} className="mobile-bottom-link">
+                  <Icon />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          <button
+            type="button"
+            aria-expanded={mobileNavOpen}
+            aria-label={mobileNavOpen ? "Réduire la navigation" : "Ouvrir la navigation"}
+            onClick={() => setMobileNavOpen((value) => !value)}
+            className="mobile-liquid-toggle"
+          >
+            <ArrowIcon className={`h-4 w-4 transition duration-300 ${mobileNavOpen ? "rotate-0" : "rotate-180"}`} />
+          </button>
+        </div>
       </div>
     </div>
   );
